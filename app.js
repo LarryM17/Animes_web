@@ -19,6 +19,7 @@ firebase.auth().onAuthStateChanged(async user => {
     loginBtn.style.display = "none";
     logoutBtn.style.display = "inline-block";
     toggleFormBtn.style.display = userIsAdmin ? "inline-block" : "none";
+    importExcelBtn.style.display = userIsAdmin ? "inline-block" : "none";
     formSection.classList.toggle("hidden", !userIsAdmin);
 
     loadData();
@@ -27,10 +28,12 @@ firebase.auth().onAuthStateChanged(async user => {
     loginBtn.style.display = "inline-block";
     logoutBtn.style.display = "none";
     toggleFormBtn.style.display = "none";
+    importExcelBtn.style.display = "none"; 
     formSection.classList.add("hidden");
     tableBody.innerHTML = "";
   }
 });
+
 
 loginBtn.onclick = () => {
   const provider = new firebase.auth.GoogleAuthProvider();
