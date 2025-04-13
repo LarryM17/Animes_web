@@ -4,14 +4,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Animes Web Mejorado</title>
+  <title>Animes Web Firebase</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 </head>
 <body>
   <header>
     <h1>Animes Web</h1>
     <div class="controls">
+      <button id="loginBtn">🔐 Iniciar sesión</button>
+      <button id="logoutBtn" style="display: none;">🔓 Cerrar sesión</button>
       <button id="toggleForm">Mostrar / Ocultar Formulario</button>
       <button id="exportBtn">📦 Exportar a Excel</button>
       <button id="themeToggle">🎨 Cambiar Tema</button>
@@ -48,6 +53,7 @@
     </table>
   </section>
 
+  <script src="firebase-config.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

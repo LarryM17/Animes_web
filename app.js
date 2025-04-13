@@ -1,66 +1,100 @@
 
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("animeForm");
-  const tableBody = document.querySelector("#animeTable tbody");
-  const toggleFormBtn = document.getElementById("toggleForm");
-  const formSection = document.getElementById("formSection");
-  const searchInput = document.getElementById("busqueda");
-  const exportBtn = document.getElementById("exportBtn");
-  const themeToggle = document.getElementById("themeToggle");
-  let darkMode = false;
+let userIsAdmin = false;
 
-  toggleFormBtn.addEventListener("click", () => {
-    formSection.classList.toggle("hidden");
+const loginBtn = document.getElementById("loginBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+const form = document.getElementById("animeForm");
+const tableBody = document.querySelector("#animeTable tbody");
+const toggleFormBtn = document.getElementById("toggleForm");
+const formSection = document.getElementById("formSection");
+const searchInput = document.getElementById("busqueda");
+const exportBtn = document.getElementById("exportBtn");
+const themeToggle = document.getElementById("themeToggle");
+
+firebase.auth().onAuthStateChanged(async user => {
+  if (user) {
+    const rolesDoc = await db.collection("roles").doc(user.uid).get();
+    userIsAdmin = rolesDoc.exists && rolesDoc.data().admin === true;
+
+    loginBtn.style.display = "none";
+    logoutBtn.style.display = "inline-block";
+    toggleFormBtn.style.display = userIsAdmin ? "inline-block" : "none";
+    formSection.classList.toggle("hidden", !userIsAdmin);
+
+    loadData();
+  } else {
+    userIsAdmin = false;
+    loginBtn.style.display = "inline-block";
+    logoutBtn.style.display = "none";
+    toggleFormBtn.style.display = "none";
+    formSection.classList.add("hidden");
+    tableBody.innerHTML = "";
+  }
+});
+
+loginBtn.onclick = () => {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  firebase.auth().signInWithPopup(provider).catch(e => alert("Error al iniciar sesión"));
+};
+
+logoutBtn.onclick = () => firebase.auth().signOut();
+
+toggleFormBtn.onclick = () => formSection.classList.toggle("hidden");
+
+themeToggle.onclick = () => document.body.classList.toggle("dark");
+
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  const titulo = document.getElementById("titulo").value.trim();
+  const temporada = document.getElementById("temporada").value.trim();
+  const fecha = document.getElementById("fechaEstreno").value;
+  const importante = document.getElementById("importante").checked;
+  const enEspera = document.getElementById("enEspera").checked;
+  const comentarios = document.getElementById("comentarios").value;
+
+  const existing = await db.collection("series").where("titulo", "==", titulo).get();
+  if (!existing.empty) return alert("Ya existe ese anime.");
+
+  await db.collection("series").add({ titulo, temporada, fecha, importante, enEspera, comentarios });
+  form.reset();
+  loadData();
+});
+
+function loadData() {
+  tableBody.innerHTML = "";
+  db.collection("series").orderBy("fecha", "desc").get().then(snapshot => {
+    snapshot.forEach(doc => {
+      const d = doc.data();
+      const fila = tableBody.insertRow();
+      fila.insertCell().textContent = d.titulo;
+      fila.insertCell().textContent = d.temporada;
+      fila.insertCell().textContent = d.fecha;
+      fila.insertCell().innerHTML = `<input type="checkbox" ${d.importante ? "checked" : ""} disabled />`;
+      fila.insertCell().innerHTML = `<input type="checkbox" ${d.enEspera ? "checked" : ""} disabled />`;
+      fila.insertCell().textContent = d.comentarios;
+      const btns = fila.insertCell();
+
+      if (userIsAdmin) {
+        const del = document.createElement("button");
+        del.textContent = "🗑️";
+        del.onclick = () => {
+          db.collection("series").doc(doc.id).delete().then(loadData);
+        };
+        btns.appendChild(del);
+      }
+    });
   });
+}
 
-  themeToggle.addEventListener("click", () => {
-    document.body.classList.toggle("dark");
-    darkMode = !darkMode;
-  });
+exportBtn.onclick = () => {
+  const wb = XLSX.utils.table_to_book(document.getElementById("animeTable"));
+  XLSX.writeFile(wb, "animes_firebase.xlsx");
+};
 
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const titulo = document.getElementById("titulo").value.trim();
-    if ([...tableBody.rows].some(row => row.cells[0].textContent === titulo)) {
-      alert("Ya existe ese título.");
-      return;
-    }
-
-    const temporada = document.getElementById("temporada").value;
-    const fecha = document.getElementById("fechaEstreno").value;
-    const importante = document.getElementById("importante").checked;
-    const enEspera = document.getElementById("enEspera").checked;
-    const comentarios = document.getElementById("comentarios").value;
-
-    const fila = tableBody.insertRow();
-    fila.insertCell().textContent = titulo;
-    fila.insertCell().textContent = temporada;
-    fila.insertCell().textContent = fecha;
-    fila.insertCell().innerHTML = `<input type="checkbox" ${importante ? "checked" : ""} />`;
-    fila.insertCell().innerHTML = `<input type="checkbox" ${enEspera ? "checked" : ""} />`;
-    fila.insertCell().textContent = comentarios;
-    const acciones = fila.insertCell();
-    acciones.innerHTML = '<button class="borrar">🗑️</button>';
-
-    fila.querySelector(".borrar").onclick = () => fila.remove();
-
-    for (let i = 0; i < 6; i++) {
-      if (i !== 3 && i !== 4) fila.cells[i].setAttribute("contenteditable", "true");
-    }
-
-    form.reset();
-  });
-
-  exportBtn.addEventListener("click", () => {
-    const wb = XLSX.utils.table_to_book(document.getElementById("animeTable"));
-    XLSX.writeFile(wb, "animes.xlsx");
-  });
-
-  searchInput.addEventListener("input", () => {
-    const filtro = searchInput.value.toLowerCase();
-    for (const row of tableBody.rows) {
-      const titulo = row.cells[0].textContent.toLowerCase();
-      row.style.display = titulo.includes(filtro) ? "" : "none";
-    }
-  });
+searchInput.addEventListener("input", () => {
+  const filtro = searchInput.value.toLowerCase();
+  for (const row of tableBody.rows) {
+    const titulo = row.cells[0].textContent.toLowerCase();
+    row.style.display = titulo.includes(filtro) ? "" : "none";
+  }
 });
