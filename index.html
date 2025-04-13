@@ -2,41 +2,52 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Animes Web</title>
-    <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Animes Web Mejorado</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 </head>
 <body>
-    <header>
-        <h1>Animes Web</h1>
-        <button id="toggleForm">Mostrar / Ocultar Formulario</button>
-    </header>
+  <header>
+    <h1>Animes Web</h1>
+    <div class="controls">
+      <button id="toggleForm">Mostrar / Ocultar Formulario</button>
+      <button id="exportBtn">📦 Exportar a Excel</button>
+      <button id="themeToggle">🎨 Cambiar Tema</button>
+      <input type="text" id="busqueda" placeholder="🔍 Buscar título..." />
+    </div>
+  </header>
 
-    <section id="formSection" class="hidden">
-        <form id="animeForm">
-            <input type="text" id="titulo" placeholder="Título único" required />
-            <input type="text" id="genero" placeholder="Género" />
-            <input type="text" id="temporada" placeholder="Temporada" />
-            <input type="text" id="estado" placeholder="Estado" />
-            <button type="submit">Añadir</button>
-        </form>
-    </section>
+  <section id="formSection" class="hidden">
+    <form id="animeForm">
+      <input type="text" id="titulo" placeholder="Título único" required />
+      <input type="text" id="temporada" placeholder="Temporada" />
+      <input type="date" id="fechaEstreno" />
+      <label><input type="checkbox" id="importante" /> Importante</label>
+      <label><input type="checkbox" id="enEspera" /> Anime en espera</label>
+      <textarea id="comentarios" placeholder="Comentarios adicionales"></textarea>
+      <button type="submit">Añadir</button>
+    </form>
+  </section>
 
-    <section class="table-container">
-        <table id="animeTable">
-            <thead>
-                <tr>
-                    <th>Título</th>
-                    <th>Género</th>
-                    <th>Temporada</th>
-                    <th>Estado</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </section>
+  <section class="table-container">
+    <table id="animeTable">
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Temporada</th>
+          <th>Fecha</th>
+          <th>Importante</th>
+          <th>En Espera</th>
+          <th>Comentarios</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
 
-    <script src="app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
