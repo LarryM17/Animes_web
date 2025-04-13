@@ -11,10 +11,7 @@ const searchInput = document.getElementById("busqueda");
 const exportBtn = document.getElementById("exportBtn");
 const themeToggle = document.getElementById("themeToggle");
 
-
 firebase.auth().onAuthStateChanged(async user => {
-  const importInput = document.getElementById("importFile");
-
   if (user) {
     const rolesDoc = await db.collection("roles").doc(user.uid).get();
     userIsAdmin = rolesDoc.exists && rolesDoc.data().admin === true;
@@ -23,7 +20,6 @@ firebase.auth().onAuthStateChanged(async user => {
     logoutBtn.style.display = "inline-block";
     toggleFormBtn.style.display = userIsAdmin ? "inline-block" : "none";
     formSection.classList.toggle("hidden", !userIsAdmin);
-    importInput.style.display = userIsAdmin ? "inline-block" : "none";
 
     loadData();
   } else {
@@ -147,11 +143,36 @@ document.getElementById("importFile").addEventListener("change", (e) => {
   if (!file || !userIsAdmin) return;
 
   const reader = new FileReader();
-  reader.onload = function (evt) {
+  
+    const loadingNotice = document.createElement("div");
+    loadingNotice.textContent = "⏳ Cargando archivo...";
+    loadingNotice.style.position = "fixed";
+    loadingNotice.style.bottom = "20px";
+    loadingNotice.style.left = "50%";
+    loadingNotice.style.transform = "translateX(-50%)";
+    loadingNotice.style.background = "#444";
+    loadingNotice.style.color = "#fff";
+    loadingNotice.style.padding = "10px 20px";
+    loadingNotice.style.borderRadius = "8px";
+    loadingNotice.style.zIndex = "9999";
+    document.body.appendChild(loadingNotice");
+    
+    reader.onload = function (evt) {
+
     const data = new Uint8Array(evt.target.result);
     const workbook = XLSX.read(data, { type: "array" });
     const sheet = workbook.Sheets[workbook.SheetNames[0]];
+    
     const json = XLSX.utils.sheet_to_json(sheet);
+    const requiredColumns = ["titulo", "temporada", "temporadaPendiente", "fecha", "importante", "enEspera", "comentarios"];
+    const columnsInFile = Object.keys(json[0] || {});
+    const missing = requiredColumns.filter(c => !columnsInFile.includes(c));
+    if (missing.length > 0) {
+      alert("❌ El archivo no tiene las columnas esperadas: " + missing.join(", "));
+      document.body.removeChild(loadingNotice);
+      return;
+    }
+
 
     json.forEach(async row => {
       const titulo = row.titulo?.trim();
@@ -171,7 +192,12 @@ document.getElementById("importFile").addEventListener("change", (e) => {
       });
     });
 
+    
     setTimeout(loadData, 1000);
+    if (document.body.contains(loadingNotice)) {
+      document.body.removeChild(loadingNotice);
+    }
+
   };
   reader.readAsArrayBuffer(file);
 });
