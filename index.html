@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lista de Animes</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Seguimiento de Animes</h1>
+
+    <div class="auth-controls">
+      <button id="loginBtn">Iniciar sesión con Google</button>
+      <button id="logoutBtn" style="display: none;">Cerrar sesión</button>
+    </div>
+
+    <button id="toggleFormBtn" style="display: none; margin-bottom: 10px;">Ocultar formulario</button>
+
+    <form id="animeForm" style="display: none;">
+      <input type="text" id="titulo" placeholder="Título" required />
+      <input type="text" id="ultimaTemp" placeholder="Última temporada vista" />
+      <input type="text" id="tempEspera" placeholder="Temporada en espera" />
+      <input type="date" id="fechaEstreno" />
+      <label><input type="checkbox" id="importante" /> Importante</label>
+      <label><input type="checkbox" id="enEspera" /> Anime en espera</label>
+      <textarea id="comentarios" placeholder="Comentarios adicionales"></textarea>
+      <button type="submit">Guardar Serie</button>
+    </form>
+
+    <label>
+      <input type="checkbox" id="filtrarEspera" />
+      Mostrar solo "Animes en espera"
+    </label>
+
+    <table id="animeTable">
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Última Temp.</th>
+          <th>Temp. Espera</th>
+          <th>Fecha Estreno</th>
+          <th>Importante</th>
+          <th>En Espera</th>
+          <th>Comentarios</th>
+        </tr>
+      </thead>
+      <tbody id="animeTableBody"></tbody>
+    </table>
+  </div>
+
+  <script src="firebase-config.js"></script>
+  <script src="app.js"></script>
+
+  <script>
+    // Mostrar/ocultar formulario manualmente
+    const toggleFormBtn = document.getElementById("toggleFormBtn");
+    // Ya no redeclaramos form para evitar errores de duplicación
+
+    toggleFormBtn.addEventListener("click", () => {
+      if (form.style.display === "none") {
+        form.style.display = "block";
+        toggleFormBtn.textContent = "Ocultar formulario";
+      } else {
+        form.style.display = "none";
+        toggleFormBtn.textContent = "Mostrar formulario";
+      }
+    });
+
+    // Mostrar botón de alternar cuando haya login
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        toggleFormBtn.style.display = "inline-block";
+      } else {
+        toggleFormBtn.style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>
