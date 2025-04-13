@@ -136,3 +136,38 @@ function mostrarDeshacer(backup) {
     }
   }, 10000);
 }
+
+
+document.getElementById("importFile").addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (!file || !userIsAdmin) return;
+
+  const reader = new FileReader();
+  reader.onload = function (evt) {
+    const data = new Uint8Array(evt.target.result);
+    const workbook = XLSX.read(data, { type: "array" });
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+    const json = XLSX.utils.sheet_to_json(sheet);
+
+    json.forEach(async row => {
+      const titulo = row.titulo?.trim();
+      if (!titulo) return;
+
+      const existing = await db.collection("series").where("titulo", "==", titulo).get();
+      if (!existing.empty) return;
+
+      await db.collection("series").add({
+        titulo,
+        temporada: row.temporada || "",
+        temporadaPendiente: row.temporadaPendiente || "",
+        fecha: row.fecha || "",
+        importante: !!row.importante,
+        enEspera: !!row.enEspera,
+        comentarios: row.comentarios || ""
+      });
+    });
+
+    setTimeout(loadData, 1000);
+  };
+  reader.readAsArrayBuffer(file);
+});

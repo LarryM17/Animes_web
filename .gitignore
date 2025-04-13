@@ -1,0 +1,6 @@
+
+# Ignorar carpeta generada automáticamente
+/gen_tabla/
+
+# Ignorar archivos comprimidos
+*.zip
