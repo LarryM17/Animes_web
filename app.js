@@ -138,7 +138,9 @@ function mostrarDeshacer(backup) {
 }
 
 
-document.getElementById("importFile").addEventListener("change", (e) => {
+const importInput = document.getElementById("importFile");
+importInput.style.display = userIsAdmin ? "inline-block" : "none";
+importInput.addEventListener("change", (e) => {
   const file = e.target.files[0];
   if (!file || !userIsAdmin) return;
 
@@ -162,7 +164,7 @@ document.getElementById("importFile").addEventListener("change", (e) => {
         temporadaPendiente: row.temporadaPendiente || "",
         fecha: row.fecha || "",
         importante: !!row.importante,
-        enEspera: !!row.enEspera,
+        enEspera: row.enEspera !== undefined ? !!row.enEspera : false,
         comentarios: row.comentarios || ""
       });
     });
