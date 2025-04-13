@@ -11,7 +11,10 @@ const searchInput = document.getElementById("busqueda");
 const exportBtn = document.getElementById("exportBtn");
 const themeToggle = document.getElementById("themeToggle");
 
+
 firebase.auth().onAuthStateChanged(async user => {
+  const importInput = document.getElementById("importFile");
+
   if (user) {
     const rolesDoc = await db.collection("roles").doc(user.uid).get();
     userIsAdmin = rolesDoc.exists && rolesDoc.data().admin === true;
@@ -20,6 +23,7 @@ firebase.auth().onAuthStateChanged(async user => {
     logoutBtn.style.display = "inline-block";
     toggleFormBtn.style.display = userIsAdmin ? "inline-block" : "none";
     formSection.classList.toggle("hidden", !userIsAdmin);
+    importInput.style.display = userIsAdmin ? "inline-block" : "none";
 
     loadData();
   } else {
@@ -138,9 +142,7 @@ function mostrarDeshacer(backup) {
 }
 
 
-const importInput = document.getElementById("importFile");
-importInput.style.display = userIsAdmin ? "inline-block" : "none";
-importInput.addEventListener("change", (e) => {
+document.getElementById("importFile").addEventListener("change", (e) => {
   const file = e.target.files[0];
   if (!file || !userIsAdmin) return;
 
@@ -164,7 +166,7 @@ importInput.addEventListener("change", (e) => {
         temporadaPendiente: row.temporadaPendiente || "",
         fecha: row.fecha || "",
         importante: !!row.importante,
-        enEspera: row.enEspera !== undefined ? !!row.enEspera : false,
+        enEspera: !!row.enEspera,
         comentarios: row.comentarios || ""
       });
     });
