@@ -1,66 +1,68 @@
+
 body {
-    font-family: sans-serif;
-    padding: 0;
-    margin: 0;
-    background-color: #f5f5f5;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+  transition: background-color 0.3s, color 0.3s;
 }
+
+.dark {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
 header {
-    background-color: #222;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    position: relative;
+  background-color: #333;
+  color: #fff;
+  padding: 1rem;
+  text-align: center;
 }
-.logout-btn {
-    position: absolute;
-    right: 20px;
-    top: 10px;
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  padding: 0.5rem;
 }
+
+input, textarea, button {
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.table-container {
+  overflow-x: auto;
+  padding: 1rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+}
+
+th, td {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+td[contenteditable="true"] {
+  background-color: #ffffcc;
+}
+
 .hidden {
-    display: none;
+  display: none;
 }
-#tools-container {
-    text-align: center;
-    margin: 15px 0;
-}
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-.dropdown-btn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px;
-    border: none;
-    cursor: pointer;
-}
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #eee;
-    min-width: 160px;
-    z-index: 1;
-}
-.dropdown-content button {
-    display: block;
-    padding: 10px;
+
+@media (max-width: 768px) {
+  th, td {
+    font-size: 0.9rem;
+    word-break: break-word;
+  }
+  input, button, textarea {
     width: 100%;
-    border: none;
-    background: none;
-    text-align: left;
-}
-.dropdown:hover .dropdown-content {
-    display: block;
-}
-#animeTable {
-    width: 100%;
-    border-collapse: collapse;
-}
-#animeTable th {
-    background-color: #4CAF50;
-    color: white;
-}
-#animeTable td, #animeTable th {
-    border: 1px solid #ddd;
-    padding: 8px;
+  }
 }

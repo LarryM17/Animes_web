@@ -1,58 +1,60 @@
+
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Animes Web</title>
-    <link rel="stylesheet" href="style.css"/>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Animes Web</title>
+<link href="style.css" rel="stylesheet"/>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 </head>
 <body>
-    <header>
-        <h1>Animes Web</h1>
-        <button id="logoutBtn" class="logout-btn hidden">🔒 Cerrar sesión</button>
-    </header>
+<header>
+<h1 style="text-align: center; margin: 1rem auto;">Animes Web</h1><input id="searchInput" placeholder="🔎 Buscar título..." style="display: block; margin: 0 auto 1rem auto; padding: 0.5rem; width: 50%;" type="text"/><div class="dropdown" style="text-align: center; margin-bottom: 1rem;"><button id="toolsMenuBtn" style="padding: 0.5rem 1rem;">🛠 Herramientas</button><div class="dropdown-content" style="display: none; margin-top: 0.5rem;"><button id="toggleForm" style="display: block; margin: 0.2rem auto;">Mostrar / Ocultar Formulario</button><button id="exportBtn" style="display: block; margin: 0.2rem auto;">📦 Exportar a Excel</button><button id="editTableBtn" style="display: block; margin: 0.2rem auto;">✏️ Editar tabla</button></div></div>
+<div class="controls">
+<button id="loginBtn">🔐 Iniciar sesión</button>
+<button id="logoutBtn" style="position: absolute; top: 10px; right: 10px;">🔓 Cerrar sesión</button>
 
-    <div id="tools-container" class="hidden">
-        <div class="dropdown">
-            <button class="dropdown-btn">🛠️ Herramientas</button>
-            <div class="dropdown-content">
-                <button id="toggleFormBtn">📋 Mostrar / Ocultar Formulario</button>
-                <button id="exportBtn">📤 Exportar a Excel</button>
-                <button id="editBtn">✏️ Editar tabla</button>
-                <button id="themeToggle">🎨 Cambiar Tema</button>
-            </div>
-        </div>
-    </div>
 
-    <div id="form-container" class="hidden">
-        <input type="text" id="tituloInput" placeholder="Título único">
-        <input type="text" id="temporadaInput" placeholder="Última temporada vista">
-        <input type="text" id="esperaInput" placeholder="Temporada en espera">
-        <input type="date" id="fechaInput">
-        <label><input type="checkbox" id="importanteInput"> Importante</label>
-        <label><input type="checkbox" id="esperaCheck"> Anime en espera</label>
-        <textarea id="comentariosInput" placeholder="Comentarios adicionales"></textarea>
-        <button id="addBtn">➕ Añadir</button>
-    </div>
 
-    <input type="text" id="searchInput" placeholder="🔍 Buscar título...">
-
-    <table id="animeTable">
-        <thead>
-            <tr>
-                <th>Título</th>
-                <th>Última Temporada Vista</th>
-                <th>Temporada en espera</th>
-                <th>Fecha de Estreno</th>
-                <th>Importante</th>
-                <th>En Espera</th>
-                <th>Nota / Comentarios</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
-
-    <script src="app.js"></script>
+<button id="themeToggle">🎨 Cambiar Tema</button>
+<input id="busqueda" placeholder="🔍 Buscar título..." type="text"/>
+</div>
+</header>
+<section class="hidden" id="formSection">
+<form id="animeForm">
+<input id="titulo" placeholder="Título único" required="" type="text"/>
+<input id="temporada" placeholder="Última temporada vista" type="text"/>
+<input id="temporada_pendiente" placeholder="Temporada en espera" type="text"/>
+<input id="fechaEstreno" type="date"/>
+<label><input id="importante" type="checkbox"/> Importante</label>
+<label><input id="enEspera" type="checkbox"/> Anime en espera</label>
+<textarea id="comentarios" placeholder="Comentarios adicionales"></textarea>
+<button type="submit">Añadir</button>
+</form>
+</section>
+<section class="table-container">
+<table id="animeTable">
+<thead>
+<tr>
+<th>Título</th>
+<th>Última Temporada Vista</th>
+<th>Temporada en espera</th>
+<th>Fecha de Estreno</th>
+<th>Importante</th>
+<th>En Espera</th>
+<th>Nota / Comentarios</th>
+<th>Acciones</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</section>
+<script src="firebase-config.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
