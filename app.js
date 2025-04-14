@@ -18,6 +18,7 @@ exportBtn.style.display = "none";
 themeToggle.style.display = "none";
 searchInput.style.display = "none";
 formSection.classList.add("hidden");
+    editBtn.style.display = "none";
 
 firebase.auth().onAuthStateChanged(async user => {
   if (user) {
@@ -30,11 +31,9 @@ firebase.auth().onAuthStateChanged(async user => {
     themeToggle.style.display = "inline-block";
     searchInput.style.display = "inline-block";
     formSection.classList.remove("hidden");
+    editBtn.style.display = "inline-block";
     let editMode = false;
 const editBtn = document.getElementById("editTableBtn");
-
-// Mostrar el botón de editar tras login
-editBtn.style.display = "inline-block";
 
 editBtn.addEventListener("click", () => {
   editMode = !editMode;
@@ -94,6 +93,7 @@ async function guardarCambios(id, row) {
     themeToggle.style.display = "none";
     searchInput.style.display = "none";
     formSection.classList.add("hidden");
+    editBtn.style.display = "none";
     tableBody.innerHTML = "";
   }
 });
