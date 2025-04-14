@@ -48,8 +48,10 @@ editBtn.addEventListener("click", () => {
       if ([0, 1, 2, 3, 6].includes(i)) {
         if (editMode) {
           cell.setAttribute("contenteditable", "true");
+          cell.classList.add("highlighted");
         } else {
           cell.removeAttribute("contenteditable");
+          cell.classList.remove("highlighted");
         }
       } else if ([4, 5].includes(i)) {
         const checkbox = cell.querySelector("input[type='checkbox']");
