@@ -19,6 +19,8 @@ themeToggle.style.display = "none";
 searchInput.style.display = "none";
 formSection.classList.add("hidden");
     editBtn.style.display = "none";
+    editMode = false;
+    editBtn.textContent = "✏️ Editar tabla";
 
 firebase.auth().onAuthStateChanged(async user => {
   if (user) {
@@ -94,6 +96,8 @@ async function guardarCambios(id, row) {
     searchInput.style.display = "none";
     formSection.classList.add("hidden");
     editBtn.style.display = "none";
+    editMode = false;
+    editBtn.textContent = "✏️ Editar tabla";
     tableBody.innerHTML = "";
   }
 });
