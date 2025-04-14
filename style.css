@@ -1,42 +1,66 @@
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
-  margin: 0;
-  padding: 0;
+    font-family: sans-serif;
+    padding: 0;
+    margin: 0;
+    background-color: #f5f5f5;
 }
-#login-section,
-#app-section {
-  margin: 20px;
+header {
+    background-color: #222;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    position: relative;
 }
-input[type="text"],
-input[type="password"] {
-  padding: 8px;
-  margin: 5px;
+.logout-btn {
+    position: absolute;
+    right: 20px;
+    top: 10px;
 }
-button {
-  padding: 8px 12px;
-  margin: 5px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 4px;
+.hidden {
+    display: none;
 }
-button:hover {
-  background-color: #45a049;
+#tools-container {
+    text-align: center;
+    margin: 15px 0;
+}
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+.dropdown-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #eee;
+    min-width: 160px;
+    z-index: 1;
+}
+.dropdown-content button {
+    display: block;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    background: none;
+    text-align: left;
+}
+.dropdown:hover .dropdown-content {
+    display: block;
 }
 #animeTable {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-#animeTable th,
-#animeTable td {
-  border: 1px solid #ddd;
-  padding: 8px;
+    width: 100%;
+    border-collapse: collapse;
 }
 #animeTable th {
-  background-color: #4CAF50;
-  color: white;
-  text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
+#animeTable td, #animeTable th {
+    border: 1px solid #ddd;
+    padding: 8px;
 }

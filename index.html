@@ -1,63 +1,58 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Animes Web</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Animes Web</title>
+    <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <header>
-    <h1>Animes Web</h1>
-    <div class="controls">
-      <button id="loginBtn">🔐 Iniciar sesión</button>
-      <button id="logoutBtn" style="display: none;">🔓 Cerrar sesión</button>
-      <button id="toggleForm">Mostrar / Ocultar Formulario</button>
-      <button id="exportBtn">📦 Exportar a Excel</button>
-      <button id="editTableBtn" style="display: none;">✏️ Editar tabla</button>
+    <header>
+        <h1>Animes Web</h1>
+        <button id="logoutBtn" class="logout-btn hidden">🔒 Cerrar sesión</button>
+    </header>
 
-      <button id="themeToggle">🎨 Cambiar Tema</button>
-      <input type="text" id="busqueda" placeholder="🔍 Buscar título..." />
+    <div id="tools-container" class="hidden">
+        <div class="dropdown">
+            <button class="dropdown-btn">🛠️ Herramientas</button>
+            <div class="dropdown-content">
+                <button id="toggleFormBtn">📋 Mostrar / Ocultar Formulario</button>
+                <button id="exportBtn">📤 Exportar a Excel</button>
+                <button id="editBtn">✏️ Editar tabla</button>
+                <button id="themeToggle">🎨 Cambiar Tema</button>
+            </div>
+        </div>
     </div>
-  </header>
 
-  <section id="formSection" class="hidden">
-    <form id="animeForm">
-      <input type="text" id="titulo" placeholder="Título único" required />
-      <input type="text" id="temporada" placeholder="Última temporada vista" />
-      <input type="text" id="temporada_pendiente" placeholder="Temporada en espera" />
-      <input type="date" id="fechaEstreno" />
-      <label><input type="checkbox" id="importante" /> Importante</label>
-      <label><input type="checkbox" id="enEspera" /> Anime en espera</label>
-      <textarea id="comentarios" placeholder="Comentarios adicionales"></textarea>
-      <button type="submit">Añadir</button>
-    </form>
-  </section>
+    <div id="form-container" class="hidden">
+        <input type="text" id="tituloInput" placeholder="Título único">
+        <input type="text" id="temporadaInput" placeholder="Última temporada vista">
+        <input type="text" id="esperaInput" placeholder="Temporada en espera">
+        <input type="date" id="fechaInput">
+        <label><input type="checkbox" id="importanteInput"> Importante</label>
+        <label><input type="checkbox" id="esperaCheck"> Anime en espera</label>
+        <textarea id="comentariosInput" placeholder="Comentarios adicionales"></textarea>
+        <button id="addBtn">➕ Añadir</button>
+    </div>
 
-  <section class="table-container">
+    <input type="text" id="searchInput" placeholder="🔍 Buscar título...">
+
     <table id="animeTable">
-      <thead>
-        <tr>
-          <th>Título</th>
-          <th>Última Temporada Vista</th>
-          <th>Temporada en espera</th>
-          <th>Fecha de Estreno</th>
-          <th>Importante</th>
-          <th>En Espera</th>
-          <th>Nota / Comentarios</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Última Temporada Vista</th>
+                <th>Temporada en espera</th>
+                <th>Fecha de Estreno</th>
+                <th>Importante</th>
+                <th>En Espera</th>
+                <th>Nota / Comentarios</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
     </table>
-  </section>
 
-  <script src="firebase-config.js"></script>
-  <script src="app.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
