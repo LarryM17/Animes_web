@@ -10,6 +10,15 @@ const formSection = document.getElementById("formSection");
 const searchInput = document.getElementById("busqueda");
 const exportBtn = document.getElementById("exportBtn");
 const themeToggle = document.getElementById("themeToggle");
+const importInput = document.getElementById("importFile");
+
+// Ocultar todo excepto login al arrancar
+logoutBtn.style.display = "none";
+toggleFormBtn.style.display = "none";
+exportBtn.style.display = "none";
+themeToggle.style.display = "none";
+searchInput.style.display = "none";
+importInput.style.display = "none";
 
 firebase.auth().onAuthStateChanged(async user => {
   if (user) {
@@ -19,7 +28,10 @@ firebase.auth().onAuthStateChanged(async user => {
     loginBtn.style.display = "none";
     logoutBtn.style.display = "inline-block";
     toggleFormBtn.style.display = userIsAdmin ? "inline-block" : "none";
-    importExcelBtn.style.display = userIsAdmin ? "inline-block" : "none";
+    exportBtn.style.display = userIsAdmin ? "inline-block" : "none";
+    importInput.style.display = userIsAdmin ? "inline-block" : "none";
+    searchInput.style.display = "inline-block";
+    themeToggle.style.display = "inline-block";
     formSection.classList.toggle("hidden", !userIsAdmin);
 
     loadData();
@@ -28,12 +40,14 @@ firebase.auth().onAuthStateChanged(async user => {
     loginBtn.style.display = "inline-block";
     logoutBtn.style.display = "none";
     toggleFormBtn.style.display = "none";
-    importExcelBtn.style.display = "none"; 
+    exportBtn.style.display = "none";
+    importInput.style.display = "none";
+    searchInput.style.display = "none";
+    themeToggle.style.display = "none";
     formSection.classList.add("hidden");
     tableBody.innerHTML = "";
   }
 });
-
 
 loginBtn.onclick = () => {
   const provider = new firebase.auth.GoogleAuthProvider();
@@ -41,9 +55,7 @@ loginBtn.onclick = () => {
 };
 
 logoutBtn.onclick = () => firebase.auth().signOut();
-
 toggleFormBtn.onclick = () => formSection.classList.toggle("hidden");
-
 themeToggle.onclick = () => document.body.classList.toggle("dark");
 
 form.addEventListener("submit", async e => {
@@ -82,15 +94,13 @@ function loadData() {
         const del = document.createElement("button");
         del.textContent = "🗑️";
         del.onclick = () => {
-          
-    if (confirm("¿Estás seguro de que quieres borrar esta serie?")) {
-      const backup = { ...d };
-      db.collection("series").doc(doc.id).delete().then(() => {
-        loadData();
-        mostrarDeshacer(backup);
-      });
-    }
-    
+          if (confirm("¿Estás seguro de que quieres borrar esta serie?")) {
+            const backup = { ...d };
+            db.collection("series").doc(doc.id).delete().then(() => {
+              loadData();
+              mostrarDeshacer(backup);
+            });
+          }
         };
         btns.appendChild(del);
       }
@@ -110,7 +120,6 @@ searchInput.addEventListener("input", () => {
     row.style.display = titulo.includes(filtro) ? "" : "none";
   }
 });
-
 
 function mostrarDeshacer(backup) {
   const undoBox = document.createElement("div");
@@ -140,32 +149,30 @@ function mostrarDeshacer(backup) {
   }, 10000);
 }
 
-
-document.getElementById("importFile").addEventListener("change", (e) => {
+// Importar Excel
+importInput.addEventListener("change", (e) => {
   const file = e.target.files[0];
   if (!file || !userIsAdmin) return;
 
   const reader = new FileReader();
-  
-    const loadingNotice = document.createElement("div");
-    loadingNotice.textContent = "⏳ Cargando archivo...";
-    loadingNotice.style.position = "fixed";
-    loadingNotice.style.bottom = "20px";
-    loadingNotice.style.left = "50%";
-    loadingNotice.style.transform = "translateX(-50%)";
-    loadingNotice.style.background = "#444";
-    loadingNotice.style.color = "#fff";
-    loadingNotice.style.padding = "10px 20px";
-    loadingNotice.style.borderRadius = "8px";
-    loadingNotice.style.zIndex = "9999";
-    document.body.appendChild(loadingNotice");
-    
-    reader.onload = function (evt) {
 
+  const loadingNotice = document.createElement("div");
+  loadingNotice.textContent = "⏳ Cargando archivo...";
+  loadingNotice.style.position = "fixed";
+  loadingNotice.style.bottom = "20px";
+  loadingNotice.style.left = "50%";
+  loadingNotice.style.transform = "translateX(-50%)";
+  loadingNotice.style.background = "#444";
+  loadingNotice.style.color = "#fff";
+  loadingNotice.style.padding = "10px 20px";
+  loadingNotice.style.borderRadius = "8px";
+  loadingNotice.style.zIndex = "9999";
+  document.body.appendChild(loadingNotice);
+
+  reader.onload = function (evt) {
     const data = new Uint8Array(evt.target.result);
     const workbook = XLSX.read(data, { type: "array" });
     const sheet = workbook.Sheets[workbook.SheetNames[0]];
-    
     const json = XLSX.utils.sheet_to_json(sheet);
     const requiredColumns = ["titulo", "temporada", "temporadaPendiente", "fecha", "importante", "enEspera", "comentarios"];
     const columnsInFile = Object.keys(json[0] || {});
@@ -175,7 +182,6 @@ document.getElementById("importFile").addEventListener("change", (e) => {
       document.body.removeChild(loadingNotice);
       return;
     }
-
 
     json.forEach(async row => {
       const titulo = row.titulo?.trim();
@@ -190,17 +196,16 @@ document.getElementById("importFile").addEventListener("change", (e) => {
         temporadaPendiente: row.temporadaPendiente || "",
         fecha: row.fecha || "",
         importante: !!row.importante,
-        enEspera: !!row.enEspera,
+        enEspera: row.enEspera !== undefined ? !!row.enEspera : false,
         comentarios: row.comentarios || ""
       });
     });
 
-    
-    setTimeout(loadData, 1000);
-    if (document.body.contains(loadingNotice)) {
+    setTimeout(() => {
+      loadData();
       document.body.removeChild(loadingNotice);
-    }
-
+    }, 1000);
   };
+
   reader.readAsArrayBuffer(file);
 });
