@@ -49,9 +49,28 @@ th, td {
   text-align: left;
 }
 
-td[contenteditable="true"] {
-  background-color: #ffffcc;
+/* Estilo general para transición y padding */
+td[contenteditable="true"].highlighted {
+  transition: background-color 0.3s, color 0.3s;
+  padding: 8px;
 }
+
+/* Modo oscuro */
+@media (prefers-color-scheme: dark) {
+  td[contenteditable="true"].highlighted {
+    background-color: #44475a; /* gris azulado oscuro */
+    color: #ffffff; /* blanco */
+  }
+}
+
+/* Modo claro */
+@media (prefers-color-scheme: light) {
+  td[contenteditable="true"].highlighted {
+    background-color: #f9f9c5; /* amarillo suave */
+    color: #000000; /* negro */
+  }
+}
+
 
 .hidden {
   display: none;
