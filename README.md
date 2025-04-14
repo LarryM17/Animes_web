@@ -1,46 +1,66 @@
 
-# Animes Web
+# 📺 Animes Web – v2.0
 
-Seguimiento personal de series anime.
-
-## 🌟 Versión 2.0
-
-Esta versión incluye mejoras visuales y funcionales completas:
-
-### 🎨 Interfaz Mejorada
-- Responsive Design para móviles y tablets
-- Formulario colapsable
-- Scroll horizontal en tablas para pantallas pequeñas
-- Modo claro/oscuro con un clic
-- Buscador por título
-
-### ⚙️ Funcionalidades nuevas
-- Edición directa de celdas de la tabla
-- Eliminar filas individualmente
-- Exportar tabla a Excel (.xlsx)
-- Validación para evitar títulos duplicados
-
-### 🛠️ Preparado para:
-- Conectar con Firebase (para guardar datos online)
-- Añadir login de administrador con Google
+Aplicación web para gestionar tus animes favoritos. Permite añadir, buscar, editar y eliminar series con sincronización en Firebase. Esta es la versión principal (`main`), completamente funcional y con login de administrador.
 
 ---
 
-## 📁 Archivos
+## 🚀 Funcionalidades Principales
 
-- `index.html`: Estructura de la página
-- `style.css`: Estilos modernos y responsive
-- `app.js`: Funcionalidad interactiva con DOM
-
----
-
-## 🚀 Cómo usar
-
-1. Abre `index.html` en tu navegador
-2. Añade animes desde el formulario
-3. Edita, elimina, filtra o exporta datos fácilmente
+- ✅ **Login con Google** (solo usuarios autorizados pueden ver y editar)
+- ✅ **Formulario para añadir animes**
+- ✅ **Listado de animes en tabla editable**
+- ✅ **Buscar por título**
+- ✅ **Exportar tabla como Excel**
+- ✅ **Borrar series con confirmación**
+- ✅ **Modo oscuro/claro**
+- ✅ **Diseño responsive para móviles y escritorio**
 
 ---
 
-> Desarrollado para uso personal, pero escalable para proyectos más grandes.
+## 🧾 Estructura de datos por anime
 
+| Campo                | Tipo       | Descripción                                 |
+|----------------------|------------|---------------------------------------------|
+| `titulo`             | Texto      | Título del anime (único, obligatorio)       |
+| `temporada`          | Texto      | Última temporada vista                      |
+| `temporadaPendiente` | Texto      | Temporada que se está esperando             |
+| `fecha`              | Fecha      | Fecha de estreno o seguimiento              |
+| `importante`         | Boolean    | Si es un anime prioritario para ti          |
+| `enEspera`           | Boolean    | Si está en espera (por defecto: false)      |
+| `comentarios`        | Texto      | Comentarios adicionales                     |
+
+---
+
+## 🔐 Seguridad
+
+- Solo los usuarios autenticados pueden interactuar con la base de datos.
+- El acceso se gestiona por UID en Firebase Authentication + reglas de Firestore.
+
+---
+
+## 🔧 Cómo usar
+
+1. Inicia sesión con tu cuenta de Google autorizada
+2. Añade tus animes usando el formulario
+3. Busca, borra o exporta según necesites
+4. Todo se guarda automáticamente en Firebase
+
+---
+
+## 📁 Ramas
+
+- `main`: versión estable y pública.
+- `pruebas`: versión en desarrollo con funcionalidades experimentales.
+
+---
+
+## 📦 Stack Tecnológico
+
+- HTML, CSS y JavaScript puro
+- Firebase Firestore + Auth
+- GitHub Pages
+
+---
+
+**Creado por [Tu Nombre o Usuario] – 2025**
