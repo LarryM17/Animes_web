@@ -4,6 +4,8 @@ let userIsAdmin = false;
 const loginBtn = document.getElementById("loginBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 const toggleFormBtn = document.getElementById("toggleForm");
+const editBtn = document.getElementById("editTableBtn");
+let editMode = false;
 const formSection = document.getElementById("formSection");
 const searchInput = document.getElementById("busqueda");
 const exportBtn = document.getElementById("exportBtn");
@@ -18,9 +20,9 @@ exportBtn.style.display = "none";
 themeToggle.style.display = "none";
 searchInput.style.display = "none";
 formSection.classList.add("hidden");
-    editBtn.style.display = "none";
+    editTableBtn.style.display = "none";
     editMode = false;
-    editBtn.textContent = "✏️ Editar tabla";
+    editTableBtn.textContent = "✏️ Editar tabla";
 
 firebase.auth().onAuthStateChanged(async user => {
   if (user) {
@@ -33,7 +35,7 @@ firebase.auth().onAuthStateChanged(async user => {
     themeToggle.style.display = "inline-block";
     searchInput.style.display = "inline-block";
     formSection.classList.remove("hidden");
-    editBtn.style.display = "inline-block";
+    editTableBtn.style.display = "inline-block";
     let editMode = false;
 const editBtn = document.getElementById("editTableBtn");
 
