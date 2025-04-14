@@ -68,16 +68,21 @@ td[contenteditable="true"] {
 
 
 /* Highlight dinámico para modo edición */
-@media (prefers-color-scheme: dark) {
-  td[contenteditable="true"] {
-    background-color: #44475a;
-    color: white;
-  }
+
 }
 
-@media (prefers-color-scheme: light) {
-  td[contenteditable="true"] {
-    background-color: #f9f9c5;
-    color: black;
-  }
+
+}
+
+
+/* Modo oscuro activado con clase .dark */
+body.dark td[contenteditable="true"] {
+  background-color: #44475a;
+  color: white;
+}
+
+/* Modo claro (cuando no hay clase .dark en <body>) */
+body:not(.dark) td[contenteditable="true"] {
+  background-color: #f9f9c5;
+  color: black;
 }
