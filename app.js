@@ -118,7 +118,8 @@ exportBtn.onclick = () => {
   XLSX.writeFile(wb, "animes_firebase.xlsx");
 };
 
-importInput.addEventListener("change", (e) => {
+// Opción de importar Excel deshabilitada
+/* importInput.addEventListener("change", (e) => {
   const file = e.target.files[0];
   if (!file || !userIsAdmin) return;
 
@@ -177,4 +178,5 @@ importInput.addEventListener("change", (e) => {
   };
 
   reader.readAsArrayBuffer(file);
+}); */
 });
