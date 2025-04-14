@@ -175,7 +175,19 @@ importInput.addEventListener("change", (e) => {
     const sheet = workbook.Sheets[workbook.SheetNames[0]];
     const json = XLSX.utils.sheet_to_json(sheet);
     const requiredColumns = ["titulo", "temporada", "temporadaPendiente", "fecha", "importante", "enEspera", "comentarios"];
-    const columnsInFile = Object.keys(json[0] || {});
+    
+    // Limpiar nombres de columnas para evitar errores por espacios o mayúsculas
+    const cleanedData = json.map(row => {
+      const cleaned = {};
+      Object.keys(row).forEach(key => {
+        const normalized = key.toLowerCase().trim();
+        cleaned[normalized] = row[key];
+      });
+      return cleaned;
+    });
+
+    const columnsInFile = Object.keys(cleanedData[0] || {});
+
     const missing = requiredColumns.filter(c => !columnsInFile.includes(c));
     if (missing.length > 0) {
       alert("❌ El archivo no tiene las columnas esperadas: " + missing.join(", "));
@@ -183,7 +195,7 @@ importInput.addEventListener("change", (e) => {
       return;
     }
 
-    json.forEach(async row => {
+    cleanedData.forEach(async row => {
       const titulo = row.titulo?.trim();
       if (!titulo) return;
 
