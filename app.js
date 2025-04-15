@@ -190,8 +190,8 @@ exportBtn.onclick = () => {
 };
 
 
-const filtroImportante = document.getElementById("filtroImportante");
-const filtroEspera = document.getElementById("filtroEspera");
+//const filtroImportante = document.getElementById("filtroImportante");
+//const filtroEspera = document.getElementById("filtroEspera");
 
 function aplicarFiltros() {
   const termino = searchInput.value.toLowerCase();
