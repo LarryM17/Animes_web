@@ -2,28 +2,62 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animes Web</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Animes Web</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 </head>
 <body>
-    <h1 class="titulo">Animes Web</h1>
+  <header>
+    <h1>Animes Web</h1>
+    <div class="controls">
+      <button id="loginBtn">🔐 Iniciar sesión</button>
+      <button id="logoutBtn" style="display: none;">🔓 Cerrar sesión</button>
+      <button id="toggleForm">Mostrar / Ocultar Formulario</button>
+      <button id="exportBtn">📦 Exportar a Excel</button>
+      <button id="editTableBtn" style="display: none;">✏️ Editar tabla</button>
 
-    <!-- Botón de login centrado -->
-    <div id="login-container" class="center">
-        <button id="login-btn" class="login-btn">🔒 Iniciar sesión</button>
+      <button id="themeToggle">🎨 Cambiar Tema</button>
+      <input type="text" id="busqueda" placeholder="🔍 Buscar título..." />
     </div>
+  </header>
 
-    <!-- Herramientas y filtros (ocultos inicialmente) -->
-    <div id="tools-and-filters" class="center hidden">
-        <button id="tools-btn">🛠 Herramientas</button>
-        <div class="filtros-extra">
-            <label><input type="checkbox" id="filter-important"> Solo importantes</label>
-            <label><input type="checkbox" id="filter-pending"> Solo en espera</label>
-        </div>
-    </div>
+  <section id="formSection" class="hidden">
+    <form id="animeForm">
+      <input type="text" id="titulo" placeholder="Título único" required />
+      <input type="text" id="temporada" placeholder="Última temporada vista" />
+      <input type="text" id="temporada_pendiente" placeholder="Temporada en espera" />
+      <input type="date" id="fechaEstreno" />
+      <label><input type="checkbox" id="importante" /> Importante</label>
+      <label><input type="checkbox" id="enEspera" /> Anime en espera</label>
+      <textarea id="comentarios" placeholder="Comentarios adicionales"></textarea>
+      <button type="submit">Añadir</button>
+    </form>
+  </section>
 
-    <script src="app.js"></script>
+  <section class="table-container">
+    <table id="animeTable">
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Última Temporada Vista</th>
+          <th>Temporada en espera</th>
+          <th>Fecha de Estreno</th>
+          <th>Importante</th>
+          <th>En Espera</th>
+          <th>Nota / Comentarios</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <script src="firebase-config.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
