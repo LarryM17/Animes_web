@@ -6,6 +6,9 @@ const loginBtn = document.getElementById("loginBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 const toggleFormBtn = document.getElementById("toggleForm");
 const editBtn = document.getElementById("editTableBtn");
+const filtroImportante = document.getElementById("filtroImportante");
+const filtroEspera = document.getElementById("filtroEspera");
+
 let editMode = false;
 const formSection = document.getElementById("formSection");
 const searchInput = document.getElementById("busqueda");
@@ -20,6 +23,8 @@ toggleFormBtn.style.display = "none";
 exportBtn.style.display = "none";
 themeToggle.style.display = "none";
 searchInput.style.display = "none";
+filtroImportante.parentElement.style.display = "none";
+filtroEspera.parentElement.style.display = "none";
 formSection.classList.add("hidden");
     editTableBtn.style.display = "none";
     editMode = false;
@@ -35,6 +40,8 @@ firebase.auth().onAuthStateChanged(async user => {
     exportBtn.style.display = "inline-block";
     themeToggle.style.display = "inline-block";
     searchInput.style.display = "inline-block";
+	filtroImportante.parentElement.style.display = "inline-block";
+	filtroEspera.parentElement.style.display = "inline-block";
     formSection.classList.remove("hidden");
     editTableBtn.style.display = "inline-block";
     let editMode = false;
@@ -98,6 +105,8 @@ async function guardarCambios(id, row) {
     exportBtn.style.display = "none";
     themeToggle.style.display = "none";
     searchInput.style.display = "none";
+	filtroImportante.parentElement.style.display = "none";
+	filtroEspera.parentElement.style.display = "none";
     formSection.classList.add("hidden");
     editBtn.style.display = "none";
     editMode = false;
