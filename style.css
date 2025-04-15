@@ -53,6 +53,12 @@ td[contenteditable="true"] {
   background-color: #ffffcc;
 }
 
+.dark td[contenteditable="true"] {
+  background-color: #334155; /* azul suave */
+  color: #ffffff; /* texto blanco */
+}
+
+
 .hidden {
   display: none;
 }
