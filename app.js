@@ -1,3 +1,4 @@
+document.body.classList.add('dark');
 
 let userIsAdmin = false;
 
@@ -112,7 +113,13 @@ loginBtn.onclick = () => {
 
 logoutBtn.onclick = () => firebase.auth().signOut();
 toggleFormBtn.onclick = () => formSection.classList.toggle("hidden");
-themeToggle.onclick = () => document.body.classList.toggle("dark");
+themeToggle.onclick = () => {
+  if (document.body.classList.contains("dark")) {
+    document.body.classList.remove("dark");
+  } else {
+    document.body.classList.add("dark");
+  }
+};
 
 searchInput.addEventListener("input", () => {
   const term = searchInput.value.toLowerCase();
@@ -148,7 +155,6 @@ function loadData() {
     snapshot.forEach(doc => {
       const d = doc.data();
       const fila = tableBody.insertRow();
-	  fila.dataset.id = doc.id;
       fila.insertCell().textContent = d.titulo || "";
       fila.insertCell().textContent = d.temporada || "";
       fila.insertCell().textContent = d.temporadaPendiente || "";
@@ -172,3 +178,29 @@ exportBtn.onclick = () => {
   const wb = XLSX.utils.table_to_book(document.getElementById("animeTable"));
   XLSX.writeFile(wb, "animes_firebase.xlsx");
 };
+
+
+const filtroImportante = document.getElementById("filtroImportante");
+const filtroEspera = document.getElementById("filtroEspera");
+
+function aplicarFiltros() {
+  const termino = searchInput.value.toLowerCase();
+  const filtrarImportante = filtroImportante.checked;
+  const filtrarEspera = filtroEspera.checked;
+
+  for (const row of tableBody.rows) {
+    const titulo = row.cells[0].textContent.toLowerCase();
+    const importante = row.cells[4].querySelector("input").checked;
+    const enEspera = row.cells[5].querySelector("input").checked;
+
+    const coincideTitulo = titulo.includes(termino);
+    const coincideImportante = !filtrarImportante || importante;
+    const coincideEspera = !filtrarEspera || enEspera;
+
+    row.style.display = (coincideTitulo && coincideImportante && coincideEspera) ? "" : "none";
+  }
+}
+
+searchInput.addEventListener("input", aplicarFiltros);
+filtroImportante.addEventListener("change", aplicarFiltros);
+filtroEspera.addEventListener("change", aplicarFiltros);
