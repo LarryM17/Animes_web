@@ -155,6 +155,7 @@ function loadData() {
     snapshot.forEach(doc => {
       const d = doc.data();
       const fila = tableBody.insertRow();
+	  fila.dataset.id = doc.id;
       fila.insertCell().textContent = d.titulo || "";
       fila.insertCell().textContent = d.temporada || "";
       fila.insertCell().textContent = d.temporadaPendiente || "";
