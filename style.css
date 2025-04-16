@@ -119,6 +119,7 @@ body.dark #animeForm {
   align-items: center;
   gap: 0.5rem;
   margin-top: 1rem;
+  position: relative;
 }
 
 .menuContent {
@@ -126,14 +127,33 @@ body.dark #animeForm {
   flex-wrap: wrap;
   gap: 0.5rem;
   justify-content: center;
+  position: absolute;
+  top: 100%; /* o según lo necesites */
+  left: 0;
+  flex-direction: column;
+  background-color: #444;
+  padding: 1rem;
+  border-radius: 0 8px 8px 0;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.menuContent button {
+  background-color: #666;
+  color: white;
+  border: none;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-align: left;
 }
 
 #menuToggle {
+  align-self: flex-start;
   background-color: #444;
   color: white;
   border: none;
   padding: 0.5rem 1rem;
-  border-radius: 8px;
+  border-radius: 4px;
   cursor: pointer;
 }
-

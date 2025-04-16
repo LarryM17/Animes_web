@@ -217,4 +217,12 @@ searchInput.addEventListener("input", aplicarFiltros);
 filtroImportante.addEventListener("change", aplicarFiltros);
 filtroEspera.addEventListener("change", aplicarFiltros);
 
+const menuToggle = document.getElementById("menuToggle");
+const menuContent = document.querySelector(".menuContent");
+
+menuToggle.onclick = () => {
+  menuContent.classList.toggle("hidden");
+};
+
+
 });
