@@ -42,7 +42,7 @@ firebase.auth().onAuthStateChanged(async user => {
     searchInput.style.display = "inline-block";
 	filtroImportante.parentElement.style.display = "inline-block";
 	filtroEspera.parentElement.style.display = "inline-block";
-    formSection.classList.remove("hidden");
+    // formSection.classList.remove("hidden");
     editTableBtn.style.display = "inline-block";
     let editMode = false;
 const editBtn = document.getElementById("editTableBtn");
