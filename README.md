@@ -84,4 +84,4 @@ Aplicación web para gestionar tus animes favoritos de forma visual, rápida y s
 
 ---
 
-**Creado por [Tu Nombre o Usuario] – 2025**
+**Creado por Larry – 2025**
