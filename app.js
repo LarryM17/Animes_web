@@ -1,3 +1,4 @@
+document.body.classList.add('dark');
 
 let userIsAdmin = false;
 
@@ -5,6 +6,9 @@ const loginBtn = document.getElementById("loginBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 const toggleFormBtn = document.getElementById("toggleForm");
 const editBtn = document.getElementById("editTableBtn");
+const filtroImportante = document.getElementById("filtroImportante");
+const filtroEspera = document.getElementById("filtroEspera");
+
 let editMode = false;
 const formSection = document.getElementById("formSection");
 const searchInput = document.getElementById("busqueda");
@@ -19,6 +23,8 @@ toggleFormBtn.style.display = "none";
 exportBtn.style.display = "none";
 themeToggle.style.display = "none";
 searchInput.style.display = "none";
+filtroImportante.parentElement.style.display = "none";
+filtroEspera.parentElement.style.display = "none";
 formSection.classList.add("hidden");
     editTableBtn.style.display = "none";
     editMode = false;
@@ -34,6 +40,8 @@ firebase.auth().onAuthStateChanged(async user => {
     exportBtn.style.display = "inline-block";
     themeToggle.style.display = "inline-block";
     searchInput.style.display = "inline-block";
+	filtroImportante.parentElement.style.display = "inline-block";
+	filtroEspera.parentElement.style.display = "inline-block";
     formSection.classList.remove("hidden");
     editTableBtn.style.display = "inline-block";
     let editMode = false;
@@ -97,6 +105,8 @@ async function guardarCambios(id, row) {
     exportBtn.style.display = "none";
     themeToggle.style.display = "none";
     searchInput.style.display = "none";
+	filtroImportante.parentElement.style.display = "none";
+	filtroEspera.parentElement.style.display = "none";
     formSection.classList.add("hidden");
     editBtn.style.display = "none";
     editMode = false;
@@ -112,7 +122,13 @@ loginBtn.onclick = () => {
 
 logoutBtn.onclick = () => firebase.auth().signOut();
 toggleFormBtn.onclick = () => formSection.classList.toggle("hidden");
-themeToggle.onclick = () => document.body.classList.toggle("dark");
+themeToggle.onclick = () => {
+  if (document.body.classList.contains("dark")) {
+    document.body.classList.remove("dark");
+  } else {
+    document.body.classList.add("dark");
+  }
+};
 
 searchInput.addEventListener("input", () => {
   const term = searchInput.value.toLowerCase();
@@ -172,3 +188,27 @@ exportBtn.onclick = () => {
   const wb = XLSX.utils.table_to_book(document.getElementById("animeTable"));
   XLSX.writeFile(wb, "animes_firebase.xlsx");
 };
+
+
+
+function aplicarFiltros() {
+  const termino = searchInput.value.toLowerCase();
+  const filtrarImportante = filtroImportante.checked;
+  const filtrarEspera = filtroEspera.checked;
+
+  for (const row of tableBody.rows) {
+    const titulo = row.cells[0].textContent.toLowerCase();
+    const importante = row.cells[4].querySelector("input").checked;
+    const enEspera = row.cells[5].querySelector("input").checked;
+
+    const coincideTitulo = titulo.includes(termino);
+    const coincideImportante = !filtrarImportante || importante;
+    const coincideEspera = !filtrarEspera || enEspera;
+
+    row.style.display = (coincideTitulo && coincideImportante && coincideEspera) ? "" : "none";
+  }
+}
+
+searchInput.addEventListener("input", aplicarFiltros);
+filtroImportante.addEventListener("change", aplicarFiltros);
+filtroEspera.addEventListener("change", aplicarFiltros);
