@@ -14,18 +14,22 @@
 <body>
   <header>
     <h1>Animes Web</h1>
-    <div class="controls">
-      <button id="loginBtn">🔐 Iniciar sesión</button>
-      <button id="logoutBtn" style="display: none;">🔓 Cerrar sesión</button>
-      <button id="toggleForm">Mostrar / Ocultar Formulario</button>
-      <button id="exportBtn">📦 Exportar a Excel</button>
-      <button id="editTableBtn" style="display: none;">✏️ Editar tabla</button>
-
-      <button id="themeToggle">🎨 Cambiar Tema</button>
-      <input type="text" id="busqueda" placeholder="🔍 Buscar título..." />
-	  <label><input type="checkbox" id="filtroImportante" /> Importante</label>
-	  <label><input type="checkbox" id="filtroEspera" /> En espera</label>
+	<button id="logoutBtn" class="logout">🔓 Cerrar sesión</button>
+	<button id="loginBtn">🔐 Iniciar sesión</button>
+    <div class="menu hidden">
+		<button id="menuToggle">☰ Menú</button>
+		<div class="menuContent hidden">
+			<button id="toggleForm">Mostrar / Ocultar Formulario</button>
+			<button id="exportBtn">📦 Exportar a Excel</button>
+			<button id="editTableBtn" style="display: none;">✏️ Editar tabla</button>
+			<button id="themeToggle">🎨 Cambiar Tema</button>
+		</div>
     </div>
+	<div class="filtros">
+		<input type="text" id="busqueda" placeholder="🔍 Buscar título..." />
+		<label><input type="checkbox" id="filtroImportante" /> Favoritos</label>
+		<label><input type="checkbox" id="filtroEspera" /> En espera</label>
+	</div>
   </header>
 
   <section id="formSection" class="hidden">
@@ -34,7 +38,7 @@
       <input type="text" id="temporada" placeholder="Última temporada vista" />
       <input type="text" id="temporada_pendiente" placeholder="Temporada en espera" />
       <input type="date" id="fechaEstreno" />
-      <label><input type="checkbox" id="importante" /> Importante</label>
+      <label><input type="checkbox" id="importante" /> Favoritos</label>
       <label><input type="checkbox" id="enEspera" /> Anime en espera</label>
       <textarea id="comentarios" placeholder="Comentarios adicionales"></textarea>
       <button type="submit">Añadir</button>
@@ -49,7 +53,7 @@
           <th>Última Temporada Vista</th>
           <th>Temporada en espera</th>
           <th>Fecha de Estreno</th>
-          <th>Importante</th>
+          <th>Favorito</th>
           <th>En Espera</th>
           <th>Nota / Comentarios</th>
           <th>Acciones</th>
