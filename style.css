@@ -105,13 +105,6 @@ body.dark #animeForm {
   padding: 0.5rem 1rem;
   cursor: pointer;
 }
-.controls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  justify-content: center;
-  padding: 0.5rem;
-}
 
 .menu {
   display: flex;
@@ -151,3 +144,14 @@ body.dark #animeForm {
   border-radius: 4px;
   cursor: pointer;
 }
+
+.filtros {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+  flex-wrap: wrap;
+}
+
+
