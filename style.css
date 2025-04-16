@@ -19,14 +19,6 @@ header {
   position: relative;
 }
 
-.controls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  justify-content: center;
-  padding: 0.5rem;
-}
-
 input, textarea, button {
   padding: 0.5rem;
   font-size: 1rem;
@@ -113,6 +105,14 @@ body.dark #animeForm {
   padding: 0.5rem 1rem;
   cursor: pointer;
 }
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  padding: 0.5rem;
+}
+
 .menu {
   display: flex;
   flex-direction: column;
