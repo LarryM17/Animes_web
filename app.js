@@ -179,11 +179,12 @@ function loadData() {
   });
 }
 
-function borrarFila(id) {
+window.borrarFila = function(id) {
   if (confirm("¿Eliminar este anime?")) {
     db.collection("series").doc(id).delete().then(loadData);
   }
 }
+
 
 exportBtn.onclick = () => {
   const wb = XLSX.utils.table_to_book(document.getElementById("animeTable"));
