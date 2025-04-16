@@ -150,12 +150,8 @@ body.dark #animeForm {
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  margin: 1rem 0;
+  margin: 3rem 0;
   flex-wrap: wrap;
-}
-
-#animeFormContainer {
-  margin-top: 2rem; 
 }
 
 
