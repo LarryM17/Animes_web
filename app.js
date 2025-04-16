@@ -1,3 +1,4 @@
+document.addEventListener("DOMContentLoaded", () => {
 document.body.classList.add('dark');
 
 let userIsAdmin = false;
@@ -212,3 +213,5 @@ function aplicarFiltros() {
 searchInput.addEventListener("input", aplicarFiltros);
 filtroImportante.addEventListener("change", aplicarFiltros);
 filtroEspera.addEventListener("change", aplicarFiltros);
+
+});
