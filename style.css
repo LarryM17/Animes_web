@@ -154,4 +154,9 @@ body.dark #animeForm {
   flex-wrap: wrap;
 }
 
+#animeFormContainer {
+  margin-top: 2rem; 
+}
+
+
 
