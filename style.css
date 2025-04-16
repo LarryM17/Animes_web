@@ -83,11 +83,9 @@ td[contenteditable="true"] {
   }
 }
 
-
 #formSection {
   background-color: #1b263b;
-  margin-top: 2rem;
-  padding: 2rem;
+  margin-top: 1rem;
   border-radius: 12px;
   width: 100%;
   max-width: 800px;
