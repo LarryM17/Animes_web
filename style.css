@@ -74,26 +74,12 @@ td[contenteditable="true"] {
 }
 
 
-#formSection {
-  display: flex;
-  justify-content: center;
+body.dark .form-wrapper {
+  background-color: #1f2937; /* gris oscuro */
+  color: white;
 }
 
-.form-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  justify-content: center;
-  padding: 1rem;
-  background-color: #1f2937; /* Gris oscuro */
-  border-radius: 10px;
-}
-
-#animeForm {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-  justify-content: center;
+body:not(.dark) .form-wrapper {
+  background-color: #f3f4f6; /* gris claro */
+  color: #111827;
 }
