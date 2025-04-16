@@ -1,3 +1,4 @@
+document.addEventListener("DOMContentLoaded", () => {
 document.body.classList.add('dark');
 
 let userIsAdmin = false;
@@ -42,7 +43,7 @@ firebase.auth().onAuthStateChanged(async user => {
     searchInput.style.display = "inline-block";
 	filtroImportante.parentElement.style.display = "inline-block";
 	filtroEspera.parentElement.style.display = "inline-block";
-    // formSection.classList.remove("hidden");
+    formSection.classList.remove("hidden");
     editTableBtn.style.display = "inline-block";
     let editMode = false;
 const editBtn = document.getElementById("editTableBtn");
@@ -212,3 +213,5 @@ function aplicarFiltros() {
 searchInput.addEventListener("input", aplicarFiltros);
 filtroImportante.addEventListener("change", aplicarFiltros);
 filtroEspera.addEventListener("change", aplicarFiltros);
+
+});
