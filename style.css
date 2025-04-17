@@ -16,7 +16,12 @@ header {
   color: #fff;
   padding: 1rem;
   text-align: center;
+  z-index:10;
   position: relative;
+}
+
+header.transparente {
+  background-color: rgba(0, 0, 0, 0.2); /* negro semitransparente */
 }
 
 input, textarea, button {
@@ -177,6 +182,48 @@ body.dark #animeForm {
   margin: 1rem 0;
   flex-wrap: wrap;
 }
+
+.welcome-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 0; /* detrás del header */
+  padding: 0;
+}
+
+.welcome-background picture,
+.welcome-background img {
+  width: 100vw;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+@media (orientation: portrait) {
+  .welcome-background picture,
+  .welcome-background img {
+    object-fit: cover;
+    padding: 0;
+    background-color: black;
+  }
+}
+
+@media (orientation: landscape) {
+  .welcome-background picture,
+  .welcome-background img {
+    object-fit: cover;
+    background-color: black;
+  }
+}
+
+
 
 
 

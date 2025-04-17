@@ -46,6 +46,9 @@ firebase.auth().onAuthStateChanged(async user => {
     formSection.classList.remove("hidden");
     editTableBtn.style.display = "inline-block";
 	document.querySelector(".menu").classList.remove("hidden");
+	document.querySelector(".table-container").classList.remove("hidden");
+	document.querySelector("header").classList.remove("transparente");
+	document.getElementById("welcomeBackground").classList.add("hidden");
     let editMode = false;
 const editBtn = document.getElementById("editTableBtn");
 
@@ -111,6 +114,9 @@ async function guardarCambios(id, row) {
 	filtroEspera.parentElement.style.display = "none";
     formSection.classList.add("hidden");
 	document.querySelector(".menu").classList.add("hidden");
+	document.querySelector(".table-container").classList.add("hidden");
+	document.querySelector("header").classList.add("transparente");
+	document.getElementById("welcomeBackground").classList.remove("hidden");
     editBtn.style.display = "none";
     editMode = false;
     editBtn.textContent = "✏️ Editar tabla";
@@ -187,12 +193,55 @@ window.borrarFila = function(id) {
   }
 }
 
-
 exportBtn.onclick = () => {
-  const wb = XLSX.utils.table_to_book(document.getElementById("animeTable"));
-  XLSX.writeFile(wb, "animes_firebase.xlsx");
-};
+  const headers = [
+    "Título",
+    "Última Temporada Vista",
+    "Temporada en espera",
+    "Fecha de Estreno",
+    "Favorito",
+    "En Espera",
+    "Nota / Comentarios"
+  ];
 
+  const data = [];
+
+  document.querySelectorAll("#animeTable tbody tr").forEach(row => {
+    const cells = row.querySelectorAll("td");
+    data.push([
+      cells[0].textContent.trim(),
+      cells[1].textContent.trim(),
+      cells[2].textContent.trim(),
+      cells[3].textContent.trim(),
+      cells[4].querySelector("input")?.checked ? "TRUE" : "FALSE",
+      cells[5].querySelector("input")?.checked ? "TRUE" : "FALSE",
+      cells[6].textContent.trim()
+    ]);
+  });
+
+  const allRows = [headers, ...data];
+  const worksheet = XLSX.utils.aoa_to_sheet(allRows);
+
+  // Estilo para los encabezados
+  const headerStyle = {
+    font: { bold: true },
+    fill: { fgColor: { rgb: "CFE2F3" } }, // celeste claro
+    alignment: { horizontal: "center" }
+  };
+
+  // Aplicar estilo a la fila 0 (encabezado)
+  headers.forEach((_, i) => {
+    const cellRef = XLSX.utils.encode_cell({ r: 0, c: i });
+    if (worksheet[cellRef]) {
+      worksheet[cellRef].s = headerStyle;
+    }
+  });
+
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Animes");
+
+  XLSX.writeFile(workbook, "animes_firebase.xlsx");
+};
 
 
 function aplicarFiltros() {
