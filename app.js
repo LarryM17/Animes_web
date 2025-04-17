@@ -189,9 +189,52 @@ window.borrarFila = function(id) {
 
 
 exportBtn.onclick = () => {
-  const wb = XLSX.utils.table_to_book(document.getElementById("animeTable"));
-  XLSX.writeFile(wb, "animes_firebase.xlsx");
+  const rows = [];
+  const headers = [
+    "Título",
+    "Última Temporada Vista",
+    "Temporada en espera",
+    "Fecha de Estreno",
+    "Favorito",
+    "En Espera",
+    "Nota / Comentarios"
+  ];
+  rows.push(headers);
+
+  document.querySelectorAll("#animeTable tbody tr").forEach(row => {
+    const cells = row.querySelectorAll("td");
+    rows.push([
+      cells[0].textContent.trim(),
+      cells[1].textContent.trim(),
+      cells[2].textContent.trim(),
+      cells[3].textContent.trim(),
+      cells[4].querySelector("input")?.checked ? "✅" : "❌",
+      cells[5].querySelector("input")?.checked ? "✅" : "❌",
+      cells[6].textContent.trim()
+    ]);
+  });
+
+  const worksheet = XLSX.utils.aoa_to_sheet(rows);
+
+  // Aplicar estilos al encabezado
+  const headerStyle = {
+    fill: { fgColor: { rgb: "CFE2F3" } }, // color celeste claro
+    font: { bold: true }
+  };
+
+  for (let i = 0; i < headers.length; i++) {
+    const cellAddress = XLSX.utils.encode_cell({ r: 0, c: i }); // fila 0
+    if (!worksheet[cellAddress]) continue;
+    worksheet[cellAddress].s = headerStyle;
+  }
+
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Animes");
+
+  // Exportar
+  XLSX.writeFile(workbook, "animes_firebase.xlsx", { cellStyles: true });
 };
+
 
 
 
