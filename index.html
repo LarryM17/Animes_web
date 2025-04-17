@@ -13,7 +13,7 @@
 
 </head>
 <body>
-  <header>
+  <header class="transparente">
     <h1>Animes Web</h1>
 	<button id="logoutBtn" class="logout">🔓 Cerrar sesión</button>
 	<button id="loginBtn">🔐 Iniciar sesión</button>
@@ -32,7 +32,18 @@
 		<label><input type="checkbox" id="filtroEspera" /> En espera</label>
 	</div>
   </header>
-
+  <div id="welcomeBackground" class="welcome-background">
+    <picture>
+		<!-- Imagen para móvil vertical -->
+		<source srcset="https://i.pinimg.com/736x/86/05/0b/86050b3b1decc3c2950eb83deee6953a.jpg" media="(orientation: portrait)">
+    
+		<!-- Imagen para pantallas grandes u horizontales -->
+		<source srcset="https://4kwallpapers.com/images/walls/thumbs_3t/15328.jpeg" media="(orientation: landscape)">
+    
+		<!-- Fallback general -->
+		<img src="https://4kwallpapers.com/images/walls/thumbs_3t/15328.jpeg" alt="Bienvenida">
+    </picture>
+  </div>
   <section id="formSection" class="hidden">
     <form id="animeForm">
       <input type="text" id="titulo" placeholder="Título único" required />
@@ -46,7 +57,7 @@
     </form>
   </section>
 
-  <section class="table-container">
+  <section class="table-container hidden">
     <table id="animeTable">
       <thead>
         <tr>

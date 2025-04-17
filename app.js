@@ -46,6 +46,9 @@ firebase.auth().onAuthStateChanged(async user => {
     formSection.classList.remove("hidden");
     editTableBtn.style.display = "inline-block";
 	document.querySelector(".menu").classList.remove("hidden");
+	document.querySelector(".table-container").classList.remove("hidden");
+	document.querySelector("header").classList.remove("transparente");
+	document.getElementById("welcomeBackground").classList.add("hidden");
     let editMode = false;
 const editBtn = document.getElementById("editTableBtn");
 
@@ -111,6 +114,9 @@ async function guardarCambios(id, row) {
 	filtroEspera.parentElement.style.display = "none";
     formSection.classList.add("hidden");
 	document.querySelector(".menu").classList.add("hidden");
+	document.querySelector(".table-container").classList.add("hidden");
+	document.querySelector("header").classList.add("transparente");
+	document.getElementById("welcomeBackground").classList.remove("hidden");
     editBtn.style.display = "none";
     editMode = false;
     editBtn.textContent = "✏️ Editar tabla";
