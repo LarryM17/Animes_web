@@ -197,7 +197,6 @@ body.dark #animeForm {
   padding: 0;
 }
 
-
 .welcome-background picture,
 .welcome-background img {
   width: 100vw;
@@ -210,8 +209,8 @@ body.dark #animeForm {
 @media (orientation: portrait) {
   .welcome-background picture,
   .welcome-background img {
-    object-fit: contain;
-    padding: 2rem;
+    object-fit: cover;
+    padding: 0;
     background-color: black;
   }
 }
