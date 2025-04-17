@@ -189,7 +189,6 @@ window.borrarFila = function(id) {
 
 
 exportBtn.onclick = () => {
-  const rows = [];
   const headers = [
     "Título",
     "Última Temporada Vista",
@@ -199,41 +198,50 @@ exportBtn.onclick = () => {
     "En Espera",
     "Nota / Comentarios"
   ];
-  rows.push(headers);
+
+  const data = [];
 
   document.querySelectorAll("#animeTable tbody tr").forEach(row => {
     const cells = row.querySelectorAll("td");
-    rows.push([
+    data.push([
       cells[0].textContent.trim(),
       cells[1].textContent.trim(),
       cells[2].textContent.trim(),
       cells[3].textContent.trim(),
-      cells[4].querySelector("input")?.checked ? "✅" : "❌",
-      cells[5].querySelector("input")?.checked ? "✅" : "❌",
+      cells[4].querySelector("input")?.checked ? "TRUE" : "FALSE",
+      cells[5].querySelector("input")?.checked ? "TRUE" : "FALSE",
       cells[6].textContent.trim()
     ]);
   });
 
-  const worksheet = XLSX.utils.aoa_to_sheet(rows);
+  const worksheet = {};
+  const range = { s: { c: 0, r: 0 }, e: { c: headers.length - 1, r: data.length } };
 
-  // Aplicar estilos al encabezado
   const headerStyle = {
-    fill: { fgColor: { rgb: "CFE2F3" } }, // color celeste claro
+    fill: { fgColor: { rgb: "CFE2F3" } },
     font: { bold: true }
   };
 
-  for (let i = 0; i < headers.length; i++) {
-    const cellAddress = XLSX.utils.encode_cell({ r: 0, c: i }); // fila 0
-    if (!worksheet[cellAddress]) continue;
-    worksheet[cellAddress].s = headerStyle;
-  }
+  // Escribir encabezados con estilo
+  headers.forEach((title, i) => {
+    const cellRef = XLSX.utils.encode_cell({ c: i, r: 0 });
+    worksheet[cellRef] = { v: title, t: "s", s: headerStyle };
+  });
 
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Animes");
+  // Escribir datos
+  data.forEach((row, rIdx) => {
+    row.forEach((val, cIdx) => {
+      const cellRef = XLSX.utils.encode_cell({ c: cIdx, r: rIdx + 1 });
+      worksheet[cellRef] = { v: val, t: "s" };
+    });
+  });
 
-  // Exportar
-  XLSX.writeFile(workbook, "animes_firebase.xlsx", { cellStyles: true });
+  worksheet['!ref'] = XLSX.utils.encode_range(range);
+  const workbook = { SheetNames: ["Animes"], Sheets: { Animes: worksheet } };
+
+  XLSX.writeFile(workbook, "animes_firebase.xlsx");
 };
+
 
 
 
