@@ -187,7 +187,6 @@ window.borrarFila = function(id) {
   }
 }
 
-
 exportBtn.onclick = () => {
   const headers = [
     "Título",
@@ -214,36 +213,29 @@ exportBtn.onclick = () => {
     ]);
   });
 
-  const worksheet = {};
-  const range = { s: { c: 0, r: 0 }, e: { c: headers.length - 1, r: data.length } };
+  const allRows = [headers, ...data];
+  const worksheet = XLSX.utils.aoa_to_sheet(allRows);
 
+  // Estilo para los encabezados
   const headerStyle = {
-    fill: { fgColor: { rgb: "CFE2F3" } },
-    font: { bold: true }
+    font: { bold: true },
+    fill: { fgColor: { rgb: "CFE2F3" } }, // celeste claro
+    alignment: { horizontal: "center" }
   };
 
-  // Escribir encabezados con estilo
-  headers.forEach((title, i) => {
-    const cellRef = XLSX.utils.encode_cell({ c: i, r: 0 });
-    worksheet[cellRef] = { v: title, t: "s", s: headerStyle };
+  // Aplicar estilo a la fila 0 (encabezado)
+  headers.forEach((_, i) => {
+    const cellRef = XLSX.utils.encode_cell({ r: 0, c: i });
+    if (worksheet[cellRef]) {
+      worksheet[cellRef].s = headerStyle;
+    }
   });
 
-  // Escribir datos
-  data.forEach((row, rIdx) => {
-    row.forEach((val, cIdx) => {
-      const cellRef = XLSX.utils.encode_cell({ c: cIdx, r: rIdx + 1 });
-      worksheet[cellRef] = { v: val, t: "s" };
-    });
-  });
-
-  worksheet['!ref'] = XLSX.utils.encode_range(range);
-  const workbook = { SheetNames: ["Animes"], Sheets: { Animes: worksheet } };
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Animes");
 
   XLSX.writeFile(workbook, "animes_firebase.xlsx");
 };
-
-
-
 
 
 function aplicarFiltros() {
