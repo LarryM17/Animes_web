@@ -275,10 +275,26 @@ importInput.addEventListener("change", async (e) => {
 
     let errores = 0;
     const bodyRows = rows.slice(1);
+	const snapshot = await db.collection("series").get();
+	const existingTitles = new Set();
+
+	snapshot.forEach(doc => {
+		const data = doc.data();
+		if (data.titulo) {
+			existingTitles.add(data.titulo.toString().trim().toLowerCase());
+		}
+	});
 
     for (let row of bodyRows) {
       const titulo = row[colIndex.titulo]?.toString().trim();
-      if (!titulo) continue;
+	  if (!titulo) continue;
+	  const tituloNormalizado = titulo.toLowerCase();
+
+
+	  if (existingTitles.has(tituloNormalizado)) {
+		errores++;
+        continue; // Salta si ya existe
+	  }
 
      const toBool = val => ["TRUE", "VERDADERO"].includes((val || "").toString().trim().toUpperCase());
 
@@ -290,11 +306,12 @@ importInput.addEventListener("change", async (e) => {
 		importante: toBool(row[colIndex.importante]),
 		enEspera: colIndex.enEspera >= 0 ? toBool(row[colIndex.enEspera]) : false,
 		comentarios: row[colIndex.comentarios]?.toString().trim() || ""
-};
+	};
 
 
       try {
         await db.collection("series").add(data);
+		existingTitles.add(tituloNormalizado);
       } catch (err) {
         console.error("❌ Error al subir fila:", err);
         errores++;
