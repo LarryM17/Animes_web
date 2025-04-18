@@ -1,6 +1,6 @@
-# 📺 Animes Web – v4.0
+# 📺 Animes Web – v4.5
 
-Aplicación web para gestionar tus animes favoritos de forma visual, rápida y segura. Esta versión incluye login con Google, edición en línea, exportación a Excel, modo oscuro y diseño responsive optimizado.
+Aplicación web para gestionar tus animes favoritos de forma visual, rápida y segura. Esta versión incluye login con Google, edición en línea, exportación/importación Excel, modo oscuro, verificación de duplicados y diseño responsive mejorado.
 
 ---
 
@@ -29,6 +29,13 @@ Aplicación web para gestionar tus animes favoritos de forma visual, rápida y s
 - 📦 **Exportar tabla a Excel**
   - Exporta directamente el contenido visible de la tabla a un archivo `.xlsx`.
 
+- 📥 **Importar desde Excel**
+  - Nuevo botón para subir un archivo `.xlsx`.
+  - Detecta columnas automáticamente (sin importar el orden).
+  - Admite textos "VERDADERO"/"FALSO" para checkboxes.
+  - Evita duplicados (ignora títulos ya existentes, sin importar mayúsculas o espacios).
+  - Añade por defecto `enEspera = false` si la columna no existe.
+
 - 🌓 **Modo oscuro / claro**
   - Alterna el tema de la página para mayor comodidad visual.
 
@@ -37,7 +44,7 @@ Aplicación web para gestionar tus animes favoritos de forma visual, rápida y s
   - Inputs y botones se reorganizan para ocupar toda la pantalla en móviles.
 
 - 📂 **Menú desplegable**
-  - Acceso a funciones (mostrar formulario, exportar, editar tabla, cambiar tema) a través de un botón tipo hamburguesa.
+  - Acceso a funciones (mostrar formulario, exportar/importar Excel, editar tabla, cambiar tema) a través de un botón tipo hamburguesa.
   - Filtros y buscador siempre visibles y centrados, fuera del menú.
 
 ---
@@ -49,9 +56,9 @@ Aplicación web para gestionar tus animes favoritos de forma visual, rápida y s
 | `titulo`             | Texto      | Título del anime (único, obligatorio)       |
 | `temporada`          | Texto      | Última temporada vista                      |
 | `temporadaPendiente` | Texto      | Temporada que se está esperando             |
-| `fecha`              | Fecha      | Fecha de estreno o seguimiento              |
+| `fecha`              | Texto      | Fecha de estreno o seguimiento              |
 | `favorito`           | Boolean    | Si es un anime prioritario para ti          |
-| `enEspera`           | Boolean    | Si está en espera                           |
+| `enEspera`           | Boolean    | Si está en espera (false por defecto)       |
 | `comentarios`        | Texto      | Comentarios adicionales                     |
 
 ---
@@ -67,7 +74,7 @@ Aplicación web para gestionar tus animes favoritos de forma visual, rápida y s
 ## 🧰 Cómo usar
 
 1. Inicia sesión con tu cuenta de Google autorizada
-2. Añade tus animes usando el formulario
+2. Añade tus animes usando el formulario o importa desde Excel
 3. Usa el buscador o filtros para localizar lo que necesites
 4. Activa el modo edición para cambiar o eliminar datos
 5. Exporta a Excel cuando quieras guardar una copia
@@ -79,7 +86,7 @@ Aplicación web para gestionar tus animes favoritos de forma visual, rápida y s
 
 - HTML + CSS + JavaScript puro
 - Firebase (Auth + Firestore)
-- Librería [SheetJS](https://sheetjs.com/) para exportar a Excel
+- Librería [SheetJS](https://sheetjs.com/) para importar/exportar Excel
 - GitHub Pages (opcional para despliegue)
 
 ---
