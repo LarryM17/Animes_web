@@ -243,6 +243,73 @@ exportBtn.onclick = () => {
   XLSX.writeFile(workbook, "animes_firebase.xlsx");
 };
 
+const importBtn = document.getElementById("importBtn");
+const importInput = document.getElementById("importInput");
+
+importInput.addEventListener("change", async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    const data = new Uint8Array(e.target.result);
+    const workbook = XLSX.read(data, { type: "array" });
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+    const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+    if (rows.length === 0) return alert("⚠️ El archivo está vacío.");
+
+    const headers = rows[0].map(h => h?.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim());
+
+    const colIndex = {
+      titulo: headers.findIndex(h => h.includes("titulo")),
+      temporada: headers.findIndex(h => h.includes("ultima") || h.includes("temporada") && h.includes("vista")),
+      temporadaPendiente: headers.findIndex(h => h.includes("pendiente")),
+      fecha: headers.findIndex(h => h.includes("fecha")),
+      importante: headers.findIndex(h => h.includes("favorito") || h.includes("importante")),
+      enEspera: headers.findIndex(h => h.includes("espera")),
+      comentarios: headers.findIndex(h => h.includes("comentario") || h.includes("nota"))
+    };
+
+    let errores = 0;
+    const bodyRows = rows.slice(1);
+
+    for (let row of bodyRows) {
+      const titulo = row[colIndex.titulo]?.toString().trim();
+      if (!titulo) continue;
+
+     const toBool = val => ["TRUE", "VERDADERO"].includes((val || "").toString().trim().toUpperCase());
+
+	 const data = {
+		titulo,
+		temporada: row[colIndex.temporada]?.toString().trim() || "",
+		temporadaPendiente: row[colIndex.temporadaPendiente]?.toString().trim() || "",
+		fecha: row[colIndex.fecha]?.toString().trim() || "",
+		importante: toBool(row[colIndex.importante]),
+		enEspera: colIndex.enEspera >= 0 ? toBool(row[colIndex.enEspera]) : false,
+		comentarios: row[colIndex.comentarios]?.toString().trim() || ""
+};
+
+
+      try {
+        await db.collection("series").add(data);
+      } catch (err) {
+        console.error("❌ Error al subir fila:", err);
+        errores++;
+      }
+    }
+
+    if (errores > 0) {
+      alert(`⚠️ Importación completada con ${errores} errores`);
+    } else {
+      alert("✅ Importación completada correctamente");
+    }
+
+    loadData();
+  };
+
+  reader.readAsArrayBuffer(file);
+});
 
 function aplicarFiltros() {
   const termino = searchInput.value.toLowerCase();
