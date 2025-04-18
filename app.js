@@ -245,6 +245,8 @@ exportBtn.onclick = () => {
 
 const importBtn = document.getElementById("importBtn");
 const importInput = document.getElementById("importInput");
+importBtn.addEventListener("click", () => importInput.click());
+
 
 importInput.addEventListener("change", async (e) => {
   const file = e.target.files[0];
